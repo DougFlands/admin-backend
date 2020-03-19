@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`admin.flands.com`) && PathPrefix(`/api/user`)
+    - match: Host(`xx.com`) && PathPrefix(`/api/user`)
       kind: Rule
       services:
         - name: apigw
@@ -23,7 +23,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`admin.flands.com`) && PathPrefix(`/api/file`)
+    - match: Host(`xx.com`) && PathPrefix(`/api/file`)
       kind: Rule
       services:
         - name: upload
