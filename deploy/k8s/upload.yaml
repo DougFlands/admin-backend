@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: upload
+  labels:
+    app: upload
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: uploadrpc
+  selector:
+    app: upload
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: upload
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: upload
+  template:
+    metadata:
+      labels:
+        app: upload
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: admin-server-config
+        - name: file
+          hostPath:
+            path: /e//Coding/k8s/admin-server-data
+            type: Directory
+      containers:
+        - name: upload
+          image: upload
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: upload-port
+          volumeMounts:
+            - name: "config"
+              mountPath: "/usr/bin/server/data/config/"
+            - name: "file"
+              mountPath: "/usr/bin/server/data/file"

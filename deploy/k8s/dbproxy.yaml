@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbproxy
+  labels:
+    app: dbproxy
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    app: dbproxy
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: dbproxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbproxy
+  template:
+    metadata:
+      labels:
+        app: dbproxy
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: admin-server-config
+      containers:
+        - name: dbproxy
+          image: dbproxy
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: dbproxy-port
+          volumeMounts:
+            - name: "config"
+              mountPath: "/usr/bin/server/data/config/"

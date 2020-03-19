@@ -1,0 +1,28 @@
+syntax = "proto3";
+package go.micro.service.user;
+
+service UserService {
+    rpc Signup(ReqSignup) returns (Resp) {};
+    rpc Signin(ReqSignin) returns (Resp) {};
+    rpc UserInfo(ReqUserInfo) returns (Resp) {};
+}
+message Resp {
+    int32 Code = 1;
+    string Msg = 2;
+    bytes Data = 3;
+}
+
+message ReqSignup {
+    string UserName = 1;
+    string PassWord = 2;
+}
+
+message ReqSignin {
+    string UserName = 1;
+    string PassWord = 2;
+}
+
+message ReqUserInfo {
+    string UserName = 1;
+    string Token = 2;
+}

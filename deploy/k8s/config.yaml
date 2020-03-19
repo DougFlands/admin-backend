@@ -1,0 +1,24 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: admin-server-config
+data:
+  config.yaml: |-
+    Kafka:
+      Topic: ""
+      Host: ""
+    Consul:
+      Addr: ""
+    Oss:
+      Path: ""
+      AccessKeyId: ""
+      AccessKeySecret: ""
+    Mysql:
+      Host: ""
+    Redis:
+      Host: ""
+      Passwd: ""
+    Service:
+      ApiGatewayHost: "0.0.0.0:80"
+      UploadHost: "0.0.0.0:80"
+    PwdSalt: ""

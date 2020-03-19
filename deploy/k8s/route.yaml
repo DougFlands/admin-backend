@@ -1,0 +1,31 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: apigwingress
+  namespace: default
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`admin.flands.com`) && PathPrefix(`/api/user`)
+      kind: Rule
+      services:
+        - name: apigw
+          kind: Service
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: uploadingress
+  namespace: default
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`admin.flands.com`) && PathPrefix(`/api/file`)
+      kind: Rule
+      services:
+        - name: upload
+          kind: Service
+          port: 80

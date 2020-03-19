@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigw
+  labels:
+    app: apigw
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    app: apigw
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: apigw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apigw
+  template:
+    metadata:
+      labels:
+        app: apigw
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: admin-server-config
+      containers:
+        - name: apigw
+          image: apigw
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: apigw-port
+          volumeMounts:
+            - name: "config"
+              mountPath: "/usr/bin/server/data/config/"
