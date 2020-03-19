@@ -32,7 +32,8 @@ spec:
             name: admin-server-config
         - name: file
           hostPath:
-            path: /e//Coding/k8s/admin-server-data
+#            path: /e//Coding/k8s/admin-server-data
+            path: /data/admin/file
             type: Directory
       containers:
         - name: transfer
