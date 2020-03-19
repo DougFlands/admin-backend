@@ -1,4 +1,11 @@
 ADMIN 后端服务
+# 简介
+一个 golang 基于微服务开发的后台管理系统，并有相应的 k8s 配置文件，对应有 react 开发的前端项目  
+
+包含功能:  
+* 用户注册与登录
+* 文件上传下载，重命名
+* 使用腾讯云OSS存储文件
 
 # 开发
 可能用到以下命令，对proto进行解析  
@@ -6,7 +13,6 @@ https://www.jianshu.com/p/1a3f1c3031b5
 ```
 protoc --micro_out=. *.proto 
 protoc --go_out=. *.proto
-
 ```
 
 # 表设计
@@ -84,3 +90,7 @@ docker build --network host -t dbproxy ./ -f ./deploy/docker/dbproxy.dockerfile
 docker build --network host -t transfer ./ -f ./deploy/docker/transfer.dockerfile
 docker build --network host -t upload ./ -f ./deploy/docker/upload.dockerfile
 ```
+
+# K8S
+在 `/deploy/k8s` 目录下执行 `kubectl apply -f xx.yalm`  
+其中 `config.yaml` 需要自己配置，项目所需 config 存放于 k8s 的字典里

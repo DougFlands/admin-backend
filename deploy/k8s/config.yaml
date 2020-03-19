@@ -14,6 +14,7 @@ data:
       AccessKeyId: ""
       AccessKeySecret: ""
     Mysql:
+      # user:pwd@tcp(host)/db?charset=utf8
       Host: ""
     Redis:
       Host: ""
