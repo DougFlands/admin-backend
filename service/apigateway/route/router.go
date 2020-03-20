@@ -15,7 +15,7 @@ func Router() *gin.Engine {
 		AllowMethods:  []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:  []string{"Origin", "Range", "x-requested-with", "content-Type"},
 		ExposeHeaders: []string{"Content-Length", "Accept-Ranges", "Content-Range", "Content-Disposition"},
-		// AllowCredentials: true,
+		AllowCredentials: true,
 	}))
 
 	router.POST("/api/user/signin", handler.DoSignInHandler)

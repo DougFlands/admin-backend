@@ -52,6 +52,12 @@ func (u *User) Signin(ctx context.Context, req *userProto.ReqSignin, res *userPr
 	passwd := req.PassWord
 	initResp(res)
 
+	if username == "" {
+		res.Code = -1
+		res.Msg = "用户名不能为空"
+		return nil
+	}
+
 	encPasswd := util.Sha1([]byte(passwd + config.PwdSalt))
 	_, err := dbclient.UserSignin(username, encPasswd)
 	if err != "" {
