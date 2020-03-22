@@ -2,12 +2,11 @@ package handler
 
 import (
 	"admin-server/config"
+	userProto "admin-server/service/account/proto"
 	dbclient "admin-server/service/db/client"
+	"admin-server/util"
 	"context"
 	"encoding/json"
-
-	userProto "admin-server/service/account/proto"
-	"admin-server/util"
 )
 
 type User struct {
@@ -62,7 +61,7 @@ func (u *User) Signin(ctx context.Context, req *userProto.ReqSignin, res *userPr
 	_, err := dbclient.UserSignin(username, encPasswd)
 	if err != "" {
 		res.Code = -1
-		res.Msg = "密码错误"
+		res.Msg = err
 		return nil
 	}
 

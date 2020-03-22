@@ -3,9 +3,8 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"github.com/mitchellh/mapstructure"
-
 	"github.com/micro/go-micro"
+	"github.com/mitchellh/mapstructure"
 
 	"admin-server/service/db/orm"
 	dbProto "admin-server/service/db/proto"
@@ -30,7 +29,6 @@ func Init(service micro.Service) {
 	dbClient = dbProto.NewDBProxyService("go.micro.service.dbproxy", service.Client())
 }
 
-
 func TableFileToFileMeta(tfile orm.TableFile) FileMeta {
 	return FileMeta{
 		FileSha1: tfile.FileHash,
@@ -52,20 +50,18 @@ func execAction(funcName string, paramJson []byte) (*dbProto.RespExec, error) {
 	})
 }
 
-
-
 // 提取DB返回的错误信息
 func formatDbResp(dbResp *dbProto.RespExec, err error) (*orm.SqlResult, string) {
 	// 转换rpc返回的结果
-	parseBody := func (resp *dbProto.RespExec) *orm.SqlResult {
+	parseBody := func(resp *dbProto.RespExec) *orm.SqlResult {
 		if resp == nil || resp.Data == nil {
-		return nil
-	}
+			return nil
+		}
 		var resList []orm.SqlResult
 		_ = json.Unmarshal(resp.Data, &resList)
 		if len(resList) > 0 {
-		return &resList[0]
-	}
+			return &resList[0]
+		}
 		return nil
 	}
 	result := parseBody(dbResp)
@@ -74,7 +70,7 @@ func formatDbResp(dbResp *dbProto.RespExec, err error) (*orm.SqlResult, string) 
 		errMsg = err.Error()
 	}
 	if !result.Suc {
-		errMsg = dbResp.Msg
+		errMsg = result.Msg
 	}
 	return result, errMsg
 }
@@ -151,12 +147,11 @@ func GetUserInfo(username string) (*orm.SqlResult, string) {
 	return formatDbResp(res, err)
 }
 
-func GetUserToken(username , token string) (*orm.SqlResult, string) {
+func GetUserToken(username, token string) (*orm.SqlResult, string) {
 	uInfo, _ := json.Marshal([]interface{}{username, token})
 	res, err := execAction("/user/GetUserToken", uInfo)
 	return formatDbResp(res, err)
 }
-
 
 func UserExist(username string) (*orm.SqlResult, string) {
 	uInfo, _ := json.Marshal([]interface{}{username})

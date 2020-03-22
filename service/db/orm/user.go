@@ -10,7 +10,7 @@ import (
 func UserSignup(username string, passwd string) (res SqlResult) {
 	// 准备sql语句 避免引号组装sql，防止注入
 	stmt, err := mydb.DBConn().Prepare(
-		"insert ignore into tbl_user (`user_name`,`user_pwd`) values (?,?)")
+		"insert ignore into tbl_user (`user_name`,`user_pwd`, `auth_type`) values (?,?,?)")
 	if err != nil {
 		log.Println("Failed to insert, err:" + err.Error())
 		res.Suc = false
@@ -19,7 +19,7 @@ func UserSignup(username string, passwd string) (res SqlResult) {
 	}
 	defer stmt.Close()
 
-	ret, err := stmt.Exec(username, passwd)
+	ret, err := stmt.Exec(username, passwd, "user")
 	if err != nil {
 		log.Println("Failed to insert, err:" + err.Error())
 		res.Suc = false
@@ -53,11 +53,6 @@ func UserSignin(username string, passwd string) (res SqlResult) {
 		res.Suc = false
 		res.Msg = err.Error()
 		return
-	} else if rows == nil {
-		log.Println("username not found: " + username)
-		res.Suc = false
-		res.Msg = "用户未注册"
-		return
 	}
 
 	pRows := mydb.ParseRows(rows)
@@ -67,7 +62,7 @@ func UserSignin(username string, passwd string) (res SqlResult) {
 		return
 	}
 	res.Suc = false
-	res.Msg = "用户名/密码错误"
+	res.Msg = "用户名不存在或密码错误"
 	return
 }
 
