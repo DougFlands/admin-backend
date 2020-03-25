@@ -6,6 +6,8 @@ ADMIN 后端服务
 * 用户注册与登录
 * 文件上传下载，重命名
 * 使用腾讯云OSS存储文件
+* 使用kafka作为消息队列
+* 使用consul做服务注册中心
 
 # 开发
 可能用到以下命令，对proto进行解析  
@@ -94,3 +96,26 @@ docker build --network host -t upload ./ -f ./deploy/docker/upload.dockerfile
 # K8S
 在 `/deploy/k8s` 目录下执行 `kubectl apply -f xx.yalm`  
 其中 `config.yaml` 需要自己配置，项目所需 config 存放于 k8s 的字典里
+配置示例
+```yaml
+Kafka:
+  Topic: "oss"
+  Host: "127.0.0.1:9002"
+Consul:
+  Addr: "127.0.0.1:8500"
+Oss:
+  Path: "https://xx.cos.ap-guangzhou.myqcloud.com"
+  AccessKeyId: ""
+  AccessKeySecret: ""
+Mysql:
+  Host: "user:pwd@tcp(host)/db?charset=utf8"
+Redis:
+  Host: "127.0.0.1:30379"
+  Passwd: ""
+Service:
+# 本地用8080，云上用80
+  ApiGatewayHost: "0.0.0.0:8080"
+  UploadHost: "0.0.0.0:8081"
+# 密码混淆字串
+PwdSalt: ""
+```

@@ -23,19 +23,6 @@ subjects:
     name: default
     namespace: default
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: account
-  labels:
-    app: account
-spec:
-  ports:
-    - port: 80
-      protocol: TCP
-  selector:
-    app: account
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
